@@ -236,6 +236,7 @@ const CreateRequestPage = () => {
             </label>
           </div>
           {/* Step 7 */}
+          {/* Step 8 */}
         </div>
       </div>
     </CreateLCLayout>
