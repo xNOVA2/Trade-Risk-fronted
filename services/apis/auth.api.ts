@@ -1,37 +1,34 @@
 import { ILoginFields, IRegisterFields } from "@/types/type";
-import api from "../middleware/middleware";
 import { STATUS } from "@/utils";
+import api from "../middleware/middleware";
 
-export const onLogin = async (data: ILoginFields) => {
+export const onLogin = async (payload: ILoginFields) => {
   try {
-    const response = await api.post('/auth/login', data);
+    const {data} = await api.post('/auth/login', payload);
     
-    if (response.status === STATUS.UNPROCESSABLE_ENTITY) {
-      return { success: false, error: response.data.message };
-    }
+    if (data.status === STATUS.UNPROCESSABLE_ENTITY) return { success: false, response: data.message };
+    if(data.status === STATUS.BAD_REQUEST) return { success: false, response: data.message };
+
+    localStorage.setItem("access-token", data.data.accessToken);
+    return { success: true, response: data.message };
     
-    if (response.status === STATUS.SUCCESSFUL_RESPONSE) {
-      return { success: true, response: response.data };
-    }
-  } catch (error) {
-    console.error(error); 
-    return { success: false, error: (error as any).response.data.message };
+  } catch (error:any) {
+    // console.error(error); 
+    return { success: false, response:  error.response?.data?.message || "Something went wrong", };
   }
 }
 
-export const onRegister = async (data: IRegisterFields) => {
+export const onRegister = async (payload: IRegisterFields) => {
     try {
-        const response = await api.post('/auth/register', data);
+        const response = await api.post('/auth/register', payload);
 
-        if (response.status === STATUS.UNPROCESSABLE_ENTITY) {
-        return { success: false, error: response.data.message };
-        }
-        
-        if (response.status === STATUS.SUCCESSFUL_CREATED) {
+        if (response.status === STATUS.UNPROCESSABLE_ENTITY) return { success: false, response: response.data.message };
+        if(response.status === STATUS.BAD_REQUEST) return { success: false, response: response.data.message };
+
         return { success: true, response: response.data };
-        }
+        
     } catch (error) {
         console.error(error); 
-        return { success: false, error: (error as any).response.data.message };
+        return { success: false, response: (error as any).response.data.message };
     }
 }

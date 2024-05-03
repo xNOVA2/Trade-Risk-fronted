@@ -1,26 +1,20 @@
 import React from "react";
+import { UseFormRegister, FieldValues, Path } from "react-hook-form";
 
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
-  // name: string;
-  placeholder: string;
-  type: string;
+interface Props<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
+  register: UseFormRegister<T>;
 }
 
-export const FloatingInput = ({
-  name,
-  placeholder,
-  type,
-  ...fields
-}: Props) => {
+export const FloatingInput = <T extends FieldValues>({ name, placeholder, type, register, ...rest }: Props<T>) => {
   return (
     <div className="relative w-full">
       <input
-        {...fields}
+        {...rest}
         type={type || "text"}
         id={name}
         className="block px-2.5 pb-2.5 pt-2.5 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-borderCol appearance-none focus:outline-none focus:ring-0 focus:border-text peer"
-        placeholder=" "
-        name={name}
+        placeholder=""
+        {...register(name as Path<T>)}
       />
       <label
         htmlFor={name}

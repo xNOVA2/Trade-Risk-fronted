@@ -42,3 +42,46 @@ export interface PaginationTypes {
   totalItems: number;
   totalPages: number;
 }
+
+type RegisterStore = {
+  role: string;
+  name: string;
+  email: string;
+  address: string;
+  constitution?: string;
+  businessType?: string;
+  phone: string;
+  bank: string;
+  swiftCode: string;
+  accountNumber?: number;
+  accountHolderName?: string;
+  accountCountry?: string;
+  accountCity?: string;
+  productInfo?: {
+      product: string;
+      annualSalary: number;
+      annualValueExports: number;
+      annualValueImports: number;
+  };
+  pocEmail: string;
+  pocPhone: string;
+  pocName?: string;
+  poc?: string;
+  pocDesignation?: string;
+  currentBanks?: {
+      name: string;
+      country: string;
+      city: string;
+  }[];
+  confirmationLcs?: boolean;
+  discountingLcs?: boolean;
+  guaranteesCounterGuarantees?: boolean;
+  discountingAvalizedBills?: boolean;
+  avalizationExportBills?: boolean;
+  riskParticipation?: boolean;
+};
+
+
+export type UseRegisterStore = RegisterStore & {
+  setValues: (values: Partial<RegisterStore>) => void;
+};
