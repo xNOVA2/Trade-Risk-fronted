@@ -17,7 +17,11 @@ const ProductInfoPage = () => {
       text="Please add information about your products and trade volume below"
     >
       <form className="max-w-xl w-full shadow-md bg-white rounded-xl p-8 z-10 mt-5 flex flex-col gap-y-5">
-        <FloatingInput name="product" placeholder="Your Product(s)" />
+        <FloatingInput
+          type="text"
+          name="product"
+          placeholder="Your Product(s)"
+        />
 
         <div className="flex items-center gap-x-2 w-full">
           <div className="border-[2px] border-primaryCol text-primaryCol rounded-lg w-16 h-12 center font-medium">
@@ -25,6 +29,7 @@ const ProductInfoPage = () => {
           </div>
           <div className="w-full">
             <FloatingInput
+              type="text"
               name="annual-sales"
               placeholder="Annual Sales of your Company"
             />
@@ -37,6 +42,7 @@ const ProductInfoPage = () => {
           </div>
           <div className="w-full">
             <FloatingInput
+              type="text"
               name="annual-value-exports"
               placeholder="Annual Value of Exports"
             />
@@ -49,6 +55,7 @@ const ProductInfoPage = () => {
           </div>
           <div className="w-full">
             <FloatingInput
+              type="text"
               name="annual-value-imports"
               placeholder="Annual Value of Imports"
             />

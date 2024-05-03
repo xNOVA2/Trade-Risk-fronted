@@ -48,7 +48,11 @@ const CompanyInfoPage = () => {
             </Select>
           </div>
 
-          <FloatingInput name="company-address" placeholder="Company Address" />
+          <FloatingInput
+            type="text"
+            name="company-address"
+            placeholder="Company Address"
+          />
 
           <div className="flex items-center gap-x-2 max-sm:flex-col max-xs:gap-y-3">
             <FloatingInput
@@ -56,12 +60,13 @@ const CompanyInfoPage = () => {
               placeholder="Company Email"
               type="email"
             />
-            <FloatingInput name="phone" placeholder="Telephone" />
+            <FloatingInput type="text" name="phone" placeholder="Telephone" />
           </div>
 
           <div className="flex items-center gap-x-2 max-sm:flex-col max-sm:gap-y-3">
             <div className="w-full">
               <FloatingInput
+                type="text"
                 name="business-nature"
                 placeholder="Nature of Business"
               />
@@ -80,13 +85,26 @@ const CompanyInfoPage = () => {
           <div className="h-[2px] w-full bg-borderCol" />
 
           <div className="flex items-center gap-x-2 max-sm:flex-col max-sm:gap-y-3">
-            <FloatingInput name="bank-name" placeholder="Bank Name" />
-            <FloatingInput name="account-number" placeholder="Account Number" />
+            <FloatingInput
+              type="text"
+              name="bank-name"
+              placeholder="Bank Name"
+            />
+            <FloatingInput
+              type="text"
+              name="account-number"
+              placeholder="Account Number"
+            />
           </div>
 
           <div className="flex items-center gap-x-2 max-sm:flex-col max-sm:gap-y-3">
-            <FloatingInput name="swift-code" placeholder="SWIFT Code" />
             <FloatingInput
+              type="text"
+              name="swift-code"
+              placeholder="SWIFT Code"
+            />
+            <FloatingInput
+              type="text"
               name="account-holder-name"
               placeholder="Account holder name"
             />

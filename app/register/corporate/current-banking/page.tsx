@@ -92,7 +92,7 @@ const CurrentBankingPage = () => {
 
   return (
     <CorporateStepLayout
-      step={2}
+      step={3}
       title="Current Banking"
       text="Add the banks you currently use so that they can be notified of any requests you add. This list can also be edited later."
     >

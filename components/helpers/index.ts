@@ -1,3 +1,4 @@
+import { DisclaimerDialog } from './DisclaimerDialog';
 import { BreadcrumbDetails } from './BreadcrumbDetails';
 import { CreateTabs } from "./CreateTabs";
 import { DatePicker } from "./DatePicker";
@@ -17,5 +18,6 @@ export {
   CountrySelect,
   DatePicker,
   CreateTabs,
-  BreadcrumbDetails
+  BreadcrumbDetails,
+  DisclaimerDialog
 };

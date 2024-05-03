@@ -20,7 +20,7 @@ export default function CorporateStepLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className}`}>
-        <RegisterStepnav />
+        <RegisterStepnav step={step}/>
         <main className="bg-bg px-2 relative w-full min-h-[88vh] flex flex-col items-center justify-center py-10">
           <div className="max-w-xl mb-5">
             <h2 className="font-semibold text-3xl text-center">{title}</h2>

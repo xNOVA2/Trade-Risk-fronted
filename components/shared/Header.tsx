@@ -132,7 +132,7 @@ export const Header = () => {
               >
                 Create a Request
               </Link>
-              {pathname === "/create-request" && (
+              {pathname.includes("/create-request") && (
                 <div className="absolute top-0 h-1.5 rounded-b-full w-full bg-primaryCol" />
               )}
             </div>

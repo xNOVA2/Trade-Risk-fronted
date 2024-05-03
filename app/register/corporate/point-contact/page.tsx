@@ -20,6 +20,7 @@ const PointContactPage = () => {
     >
       <form className="max-w-xl w-full shadow-md bg-white rounded-xl p-8 z-10 mt-5 flex flex-col gap-y-5">
         <FloatingInput
+          type="text"
           name="authorized-point"
           placeholder="Authorized Point of Contact"
         />
@@ -29,14 +30,14 @@ const PointContactPage = () => {
             placeholder="Company Email"
             type="email"
           />
-          <FloatingInput name="phone" placeholder="Phone Number*" />
+          <FloatingInput type="text" name="phone" placeholder="Phone Number*" />
         </div>
 
         <div className="h-[2px] w-full bg-borderCol" />
 
         <div className="flex items-center gap-x-2">
-          <FloatingInput name="poc" placeholder="Authorized POC" />
-          <FloatingInput name="poc-designation" placeholder="POC Designation" />
+          <FloatingInput type="text" name="poc" placeholder="Authorized POC" />
+          <FloatingInput type="text" name="poc-designation" placeholder="POC Designation" />
         </div>
 
         <label

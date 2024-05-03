@@ -3,14 +3,14 @@ import { Check } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
-export const RegisterStepnav = () => {
+export const RegisterStepnav = ({ step }: { step: number }) => {
   const pathname = usePathname();
-  const isInfoPage = pathname === "/register/corporate/product-info";
-  const isContactPage = pathname === "/register/corporate/point-contact";
-  const isCurrentBanking = pathname === "/register/corporate/current-banking";
+  const isInfoPage = step === 1;
+  const isContactPage = step === 2;
+  const isCurrentBanking = step == 3;
 
   return (
-    <header className="flex items-center justify-between border-b border-primaryCol py-4 md:px-10 px-4  bg-white">
+    <header className="relative flex items-center justify-between py-4 md:px-10 px-4 bg-white">
       {/* Logo */}
       <div className="flex items-center justify-center gap-2">
         <Image
@@ -58,7 +58,9 @@ export const RegisterStepnav = () => {
 
         <div className="flex items-center gap-x-2">
           <p
-            className={`${isCurrentBanking ? "text-primaryCol font-medium" : "text-para"}`}
+            className={`${
+              isCurrentBanking ? "text-primaryCol font-medium" : "text-para"
+            }`}
           >
             Current Banking
           </p>
@@ -66,6 +68,7 @@ export const RegisterStepnav = () => {
       </nav>
       {/* Extra space */}
       <div></div>
+      <div className="h-0.5 absolute bottom-0 left-0 bg-primaryCol transition-all duration-150" style={{width: step === 1 ? "45%": step === 2 ? "70%": "100%"}}/>
     </header>
   );
 };
