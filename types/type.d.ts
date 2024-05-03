@@ -32,11 +32,13 @@ export interface IApiResponse<T> {
   paginationData?: IPaginationData;
 }
 
-export interface IPaginationData {
-  total: number;
-  limit: number;
-  page: number;
-  pages: number;
+export interface PaginationTypes {
+  currentPage: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
+  nextPage: null | number;
+  perPage: number;
+  prevPage: null | number;
+  totalItems: number;
+  totalPages: number;
 }

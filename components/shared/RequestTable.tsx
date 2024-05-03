@@ -12,6 +12,7 @@ import {
   CountrySelect,
   DateRangePicker,
   Filter,
+  Pagination,
   ProductFilter,
   SearchBar,
 } from "../helpers";
@@ -178,6 +179,9 @@ export const RequestTable = ({ isBank }: { isBank: boolean }) => {
                   ))}
             </TableBody>
           </Table>
+        </div>
+        <div className="mt-5">
+          <Pagination data=""/>
         </div>
       </div>
     </div>

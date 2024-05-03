@@ -1,3 +1,4 @@
+import { Pagination } from './Pagination';
 import { DisclaimerDialog } from './DisclaimerDialog';
 import { BreadcrumbDetails } from './BreadcrumbDetails';
 import { CreateTabs } from "./CreateTabs";
@@ -19,5 +20,6 @@ export {
   DatePicker,
   CreateTabs,
   BreadcrumbDetails,
-  DisclaimerDialog
+  DisclaimerDialog,
+  Pagination
 };
