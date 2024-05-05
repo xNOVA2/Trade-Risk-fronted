@@ -31,9 +31,10 @@ export default function LoginPage() {
     const { response,success } = await mutateAsync(data);
     // console.log(response);
     if(success == false)return toast.error(response as string);
-    if(success == true) return toast.success(response as string)
-      
-    router.push("/dashboard");
+    if(success == true)  toast.success(response as string)
+    
+    console.log(response);
+    router.push("/");
     };
 
   return (

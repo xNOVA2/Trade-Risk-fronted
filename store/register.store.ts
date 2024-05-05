@@ -36,7 +36,6 @@ const useRegisterStore = create<UseRegisterStore>((set, get) => ({
     discountingAvalizedBills: false,
     avalizationExportBills: false,
     riskParticipation: false,
-
     setValues: (values: Partial<RegisterStore>) => set((state) => ({ ...state, ...values })),
 }));
 export const getStateValues = (state: UseRegisterStore): StateValues => {

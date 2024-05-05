@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const getAccessToken = () => {
-  return localStorage.getItem("access-token");
+  return localStorage.getItem("accessToken");
 };
 
 const api = axios.create({
@@ -12,7 +12,10 @@ api.interceptors.request.use(
   async (config) => {
     const accessToken = getAccessToken();
 
-    config.headers.accessToken = accessToken;
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    
     return config;
   },
   (error) => {

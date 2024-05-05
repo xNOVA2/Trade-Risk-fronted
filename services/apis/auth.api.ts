@@ -9,7 +9,7 @@ export const onLogin = async (payload: ILoginFields) => {
     if (data.status === STATUS.UNPROCESSABLE_ENTITY) return { success: false, response: data.message };
     if(data.status === STATUS.BAD_REQUEST) return { success: false, response: data.message };
 
-    localStorage.setItem("access-token", data.data.accessToken);
+    localStorage.setItem("accessToken", data.data.accessToken);
     return { success: true, response: data.message };
     
   } catch (error:any) {

@@ -13,30 +13,19 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { companyInfoSchema } from "@/validation";
 import { z } from "zod";
+import useRegisterStore, { getStateValues } from "@/store/register.store";
 
 const CompanyInfoPage = () => {
   const router = useRouter();
-
-  // const [name, setname] = useState<string>('')
-  // const [email, setemail] = useState<string>('')
-  const [constitution,setConstitution] = useState<string>('');
-  const [businessType,setBusinessType] = useState<string>('')
-  // const [address, setaddress] = useState<string>('')
-  // const [phone, setphone] = useState<string>('')
-  // const [bankName, setbankName] = useState<string>('')
-  // const [accountNumber, setaccountNumber] = useState<string>('')
-  // const [swiftCode, setswiftCode] = useState<string>('')
-  // const [accountHolderName, setaccountHolderName] = useState<string>('')
-  const [accountCountry, setaccountCountry] = useState<string>('')
-  const [accountCity, setaccountCity] = useState<string>('')
-
-
+  const setValues = useRegisterStore((state) => state.setValues);
+  
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof companyInfoSchema>>({
@@ -45,11 +34,24 @@ const CompanyInfoPage = () => {
 
   const onSubmit: SubmitHandler<z.infer<typeof companyInfoSchema>>  = async (data:any) => {
 
-    
-      // router.push("/register/corporate/product-info");
+      console.log(data);
+      setValues(data)
+      //  console.log(getStateValues(useRegisterStore.getState()))
+      router.push("/register/corporate/product-info");
+
     };
     
-    
+    useEffect(() => {
+      if (errors) {
+        Object.keys(errors).forEach((fieldName: string) => {
+          const errorMessage = errors[fieldName as keyof typeof errors]?.message; 
+          if (errorMessage) {
+            toast.error(`${fieldName}: ${errorMessage}`);
+          }
+        });
+      }
+    }, [errors]);
+
   return (
     <AuthLayout>
       <section className="max-w-2xl mx-auto w-full max-xs:px-1 z-10 ">
@@ -61,9 +63,8 @@ const CompanyInfoPage = () => {
         <form className="max-w-2xl mx-auto w-full shadow-md bg-white rounded-xl xs:p-8 max-xs:py-8 max-xs:px-4 z-10 mt-5 flex flex-col sm:gap-y-5 gap-y-3" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex items-center gap-x-2 max-sm:flex-col max-sm:gap-y-3">
             <FloatingInput  name="name" placeholder="Company Name" register={register} />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
             {/* Company Constitution */}
-            <Select>
+            <Select onValueChange={(value)=>setValue('constitution', value, { shouldValidate: true })}>
               <SelectTrigger className="w-full py-5 px-4 text-gray-500">
                 <SelectValue placeholder="Company Constitution" />
               </SelectTrigger>
@@ -83,7 +84,6 @@ const CompanyInfoPage = () => {
 
 
           <FloatingInput name="address" placeholder="Company Address" register={register} />
-          {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
           <div className="flex items-center gap-x-2 max-sm:flex-col max-xs:gap-y-3">
             <FloatingInput
               name="email"
@@ -92,9 +92,7 @@ const CompanyInfoPage = () => {
               register={register}
             />
 
-            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
             <FloatingInput name="phone" placeholder="Telephone" register={register} />
-            {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
 
           </div>
 
@@ -102,21 +100,21 @@ const CompanyInfoPage = () => {
             <div className="w-full">
               <FloatingInput
                 type="text"
-                name="business-nature"
+                name="businessNature"
                 placeholder="Nature of Business"
                 register={register}
               />
               {errors.businessNature && <p className="text-red-500 text-sm">{errors.businessNature.message}</p>}
             </div>
-            {/* Company Constitution */}
-            <Select>
+             <Select onValueChange={(value)=>setValue('businessType', value, { shouldValidate: true })}>
               <SelectTrigger className="w-full py-5 px-4 text-gray-500">
                 <SelectValue placeholder="Business Sector" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Automotive">Automotive</SelectItem>
               </SelectContent>
-            </Select>
+            </Select>    {/* Company Constitution */}
+       
           </div>
 
           <div className="h-[2px] w-full bg-borderCol" />
@@ -140,7 +138,7 @@ const CompanyInfoPage = () => {
 
           <div className="flex items-center gap-x-2 max-sm:flex-col max-sm:gap-y-3">
             {/* Country */}
-            <Select>
+            <Select onValueChange={(value)=>setValue('accountCountry', value, { shouldValidate: true })}>
               <SelectTrigger className="w-full py-5 px-4 text-gray-500">
                 <SelectValue placeholder="Account Country" />
               </SelectTrigger>
@@ -153,7 +151,7 @@ const CompanyInfoPage = () => {
               </SelectContent>
             </Select>
             {/* City */}
-            <Select>
+            <Select onValueChange={(value)=>setValue('accountCity', value, { shouldValidate: true })}>
               <SelectTrigger className="w-full py-5 px-4 text-gray-500">
                 <SelectValue placeholder="Account City" />
               </SelectTrigger>

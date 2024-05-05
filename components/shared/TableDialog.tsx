@@ -7,23 +7,33 @@ import {
 } from "@/components/ui/dialog";
 import { ArrowUpNarrowWide, Eye, ListFilter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ApiResponse, IBids } from "@/types/type";
+import { acceptOrRejectBid, fetchBids } from "@/services/apis/bids.api";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { convertDateToYYYYMMDD } from "@/utils";
 
-const BidCard = () => {
+const BidCard = ({data}:{data:IBids}) => {
+  const queryClient = useQueryClient();
+  const handleSubmit = async (status:string,id:string) =>{
+    const {success,response } = await acceptOrRejectBid(status,id)
+      if(!success) return
+      if(success) queryClient.invalidateQueries({ queryKey: ["single-lcs-bids"] });
+  }
   return (
     <div className="border border-borderCol py-5 px-3 rounded-lg grid grid-cols-2 gap-y-1.5">
       <div>
         <p className="text-sm text-para mb-1">Bid Number</p>
-        <p className="font-semibold text-lg">100928</p>
+        <p className="font-semibold text-lg">{data._id.slice(1,6)}</p>
       </div>
 
       <div>
-        <p className="text-lg font-semibold mb-1">Riyad Bank</p>
-        <p className="text-sm text-para">Saudi Arabia</p>
+        <p className="text-lg font-semibold mb-1">{data.bidBy.name}</p>
+        <p className="text-sm text-para">{data.bidBy.country}</p>
       </div>
 
       <div>
         <p className="text-sm text-para mb-1">Confirmation Rate</p>
-        <p className="text-lg font-semibold text-text">2.35% per annum</p>
+        <p className="text-lg font-semibold text-text">{data.confirmationPrice}% per annum</p>
       </div>
 
       <div>
@@ -43,18 +53,18 @@ const BidCard = () => {
 
       <div>
         <p className="text-sm text-para mb-1">Bid Recieved</p>
-        <p className="font-semibold text-lg">Jan 9 2023, 14:55</p>
+        <p className="font-semibold text-lg">{convertDateToYYYYMMDD(data.createdAt)}</p>
       </div>
 
       <div>
         <p className="text-sm text-para mb-1">Bid Expiry</p>
-        <p className="font-semibold text-lg">Jan 10 2023, 23:59</p>
+        <p className="font-semibold text-lg">{convertDateToYYYYMMDD(data.createdAt)}</p>
       </div>
 
-      <Button size="lg" className="mt-2 bg-[#29C084] hover:bg-[#29C084]/90">
+      <Button size="lg" className="mt-2 bg-[#29C084] hover:bg-[#29C084]/90" onClick={()=>handleSubmit("Accepted",data._id)}>
         Accept
       </Button>
-      <Button size="lg" className="mt-2 text-para" variant="ghost">
+      <Button size="lg" className="mt-2 text-para" variant="ghost" onClick={()=>handleSubmit("Rejected",data._id)}>
         Reject
       </Button>
     </div>
@@ -82,7 +92,26 @@ const LCInfo = ({
   );
 };
 
-export const TableDialog = () => {
+export const TableDialog = ({id}:{id:string}) => {
+  
+  const {
+    isLoading,
+    error,
+    data,
+  }: { data: ApiResponse<IBids> | undefined , error: any; isLoading: boolean } =
+    useQuery({
+      queryKey: ["single-lcs-bids",id],
+      queryFn: ()=>fetchBids({id}),
+        // FetchUsers({ token: token!, search: searchData, page: Number(Page) }),
+    });
+
+    
+    // built a proper loading page later 
+    if(isLoading) return <div>Loading...</div>
+    if(error) return <div>{error}</div>
+    if(!data) return <div>No data found</div>
+
+
   return (
     <Dialog>
       <DialogTrigger className="center border border-borderCol rounded-md w-full px-1 py-2">
@@ -168,9 +197,13 @@ export const TableDialog = () => {
             </div>
             {/* Bids */}
             <div className="flex flex-col gap-y-4 max-h-[65vh] overflow-y-auto overflow-x-hidden mt-5">
-              <BidCard />
-              <BidCard />
-              <BidCard />
+              {data.data.map((data)=>{
+                return(
+                  <BidCard data={data} />
+                )
+              })}
+              {/* <BidCard /> */}
+              {/* <BidCard /> */}
             </div>
           </div>
         </div>

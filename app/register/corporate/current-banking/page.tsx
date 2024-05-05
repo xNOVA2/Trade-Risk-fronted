@@ -1,16 +1,8 @@
 "use client";
-import { FloatingInput } from "@/components/helpers/FloatingInput";
 import CorporateStepLayout from "@/components/layouts/CorporateStepLayout";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { X } from "lucide-react";
 import {
   Command,
@@ -27,6 +19,7 @@ import {
 import { useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import useRegisterStore, { getStateValues } from "@/store/register.store";
 
 const SelectedBank = () => {
   return (
@@ -40,31 +33,9 @@ const SelectedBank = () => {
 const CurrentBankingPage = () => {
   const router = useRouter();
   const navigate = () => {
+     console.log(getStateValues(useRegisterStore.getState()))
     router.push("/register/complete");
   };
-
-  const frameworks = [
-    {
-      value: "next.js",
-      label: "Next.js",
-    },
-    {
-      value: "sveltekit",
-      label: "SvelteKit",
-    },
-    {
-      value: "nuxt.js",
-      label: "Nuxt.js",
-    },
-    {
-      value: "remix",
-      label: "Remix",
-    },
-    {
-      value: "astro",
-      label: "Astro",
-    },
-  ];
 
   const countries = [
     {
@@ -72,8 +43,8 @@ const CurrentBankingPage = () => {
       label: "Pakistan",
     },
     {
-      value: "india",
-      label: "India",
+      value: "dubai",
+      label: "dubai",
     },
     {
       value: "saudi-arabia",
@@ -204,7 +175,7 @@ const CurrentBankingPage = () => {
                   role="combobox"
                   aria-expanded={cityOpen}
                   className="w-[200px] justify-between"
-                  disabled={true}
+                  disabled={false}
                 >
                   {cityVal
                     ? countries.find((city) => city.value === cityVal)?.label

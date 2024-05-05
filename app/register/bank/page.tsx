@@ -9,9 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { onRegister } from "@/services/apis";
+import { bankSchema } from "@/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const CheckBoxInput = ({ label, id }: { label: string; id: string }) => {
   return (
@@ -26,9 +33,37 @@ const CheckBoxInput = ({ label, id }: { label: string; id: string }) => {
 
 const BankRegisterPage = () => {
   const router = useRouter();
-  const navigate = () => {
-    router.push("/register/complete");
-  };
+
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<z.infer<typeof bankSchema>>({
+    resolver: zodResolver(bankSchema),
+  });
+
+  const onSubmit: SubmitHandler<z.infer<typeof bankSchema>>  = async (data:any) => {
+    
+    const {response,success} = await onRegister(data)
+    if(!success) return toast.error(response)
+    if(success) toast.success("Account Register successfully")
+
+    console.log(response);
+    
+      // router.push("/register/corporate/current-banking");
+    };
+    
+    useEffect(() => {
+      if (errors) {
+        Object.keys(errors).forEach((fieldName: string) => {
+          const errorMessage = errors[fieldName as keyof typeof errors]?.message; 
+          if (errorMessage) {
+            toast.error(`${fieldName}: ${errorMessage}`);
+          }
+        });
+      }
+    }, [errors]);
 
   return (
     <AuthLayout>
@@ -37,9 +72,10 @@ const BankRegisterPage = () => {
         <p className="text-para text-center mt-5">
           Please fill in the form below to register your bank
         </p>
-        <form className="max-w-[800px] mx-auto w-full shadow-md bg-white rounded-xl xs:p-8 max-xs:py-8 max-xs:px-4 z-10 mt-5 flex flex-col sm:gap-y-5 gap-y-3">
+        <form className="max-w-[800px] mx-auto w-full shadow-md bg-white rounded-xl xs:p-8 max-xs:py-8 max-xs:px-4 z-10 mt-5 flex flex-col sm:gap-y-5 gap-y-3" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex items-center gap-x-2 w-full max-sm:flex-col max-sm:gap-y-3">
-            <FloatingInput name="bank-name" placeholder="Bank Name" />
+            <FloatingInput name="name" placeholder="Bank Name" register={register} />
+            <FloatingInput name="email" placeholder="email" register={register} />
 
             <Select>
               <SelectTrigger className="w-full py-5 px-4 text-gray-500">
@@ -50,18 +86,19 @@ const BankRegisterPage = () => {
               </SelectContent>
             </Select>
 
-            <FloatingInput name="swift" placeholder="Swift" />
+            <FloatingInput name="swiftCode" placeholder="Swift" register={register} />
           </div>
 
-          <FloatingInput name="address" placeholder="Registered Address" />
+          <FloatingInput name="address" placeholder="Registered Address" register={register}/>
 
           <div className="flex items-center gap-x-2 w-full">
             <FloatingInput
-              name="poc-email"
+            register={register}
+              name="pocEmail"
               placeholder="POC Email"
               type="email"
             />
-            <FloatingInput name="poc-telephone" placeholder="POC Telephone" />
+            <FloatingInput name="pocPhone" placeholder="POC Telephone" register={register} />
           </div>
 
           <p className="text-[16px] font-semibold">
@@ -71,6 +108,7 @@ const BankRegisterPage = () => {
           {/* Checkboxes */}
           <div className="grid sm:grid-cols-2 grid-cols-1 gap-x-2 gap-y-3 p-2 rounded-lg border border-borderCol">
             <CheckBoxInput
+
               label="Confirmation of LCs"
               id="confirmation-of-lcs"
             />
@@ -129,8 +167,8 @@ const BankRegisterPage = () => {
             <Button
               className="w-full disabled:bg-borderCol disabled:text-[#B5B5BE] bg-primaryCol hover:bg-primaryCol/90 text-[16px] rounded-lg"
               size="lg"
-              disabled={true}
-              onClick={navigate}
+              // disabled={true}
+              type="submit"
             >
               Get Started
             </Button>

@@ -26,18 +26,26 @@ import {
   bankTableData,
 } from "@/utils/data";
 import { AddBid } from "./AddBid";
+import { ApiResponse, ILcs } from "@/types/type";
+import { convertDateToYYYYMMDD } from "@/utils";
 
-const TableDataCell = ({ data }: { data: string | number }) => {
+interface TableDataCellProps {
+  data: string | number | Date | undefined;
+}
+
+const TableDataCell = ({ data }: TableDataCellProps) => {
   return (
     <TableCell className="px-1 py-1 max-w-[200px]">
       <div className="truncate border border-borderCol rounded-md w-full p-2 py-2.5">
-        {data}
+        {data !== undefined ? String(data) : '-'} 
       </div>
     </TableCell>
   );
 };
 
-export const RequestTable = ({ isBank }: { isBank: boolean }) => {
+export const RequestTable = ({ isBank,data }: { isBank: boolean,data:ApiResponse<ILcs> }) => {
+  
+    
   return (
     <div>
       <div className="rounded-md border px-4 py-4">
@@ -119,7 +127,6 @@ export const RequestTable = ({ isBank }: { isBank: boolean }) => {
                       <TableDataCell data={item.beneficiary} />
                       <TableDataCell data={item.lcApplicant} />
                       <TableDataCell data={item.lcAmount} />
-
                       <TableCell className="px-1 py-1 max-w-[200px]">
                         {item.bids !== "pending" ? (
                           <AddBid
@@ -138,16 +145,16 @@ export const RequestTable = ({ isBank }: { isBank: boolean }) => {
                         )}
                       </TableCell>
                       <TableCell className="px-1 py-1 max-w-[200px]">
-                        <TableDialog />
+                        {/* <TableDialog id="id"/>  */}
                       </TableCell>
                     </TableRow>
                   ))
-                : tableData.map((item, index) => (
+                : data.data.map((item, index) => (
                     <TableRow key={index} className="border-none ">
-                      <TableDataCell data={item.refNo} />
-                      <TableDataCell data={item.request} />
-                      <TableDataCell data={item.expires} />
-                      <TableDataCell data={item.productType} />
+                      <TableDataCell data={item.refId} />
+                      <TableDataCell data={convertDateToYYYYMMDD(item.lcPeriod?.startDate)} />
+                      <TableDataCell data={convertDateToYYYYMMDD(item.lcPeriod?.endDate)} />
+                      <TableDataCell data={item.lcType} />
                       <TableCell className="px-1 py-1 max-w-[200px]">
                         <div className="flex items-center gap-x-2 border border-borderCol rounded-md w-full p-2 py-2.5">
                           <Image
@@ -157,23 +164,23 @@ export const RequestTable = ({ isBank }: { isBank: boolean }) => {
                             height={100}
                             className="object-cover size-5"
                           />
-                          <div className="truncate">{item.lcIssuingBank}</div>
+                          <div className="truncate">{item.issuingBank.bank}</div>
                         </div>
                       </TableCell>
-                      <TableDataCell data={item.beneficiary} />
-                      <TableDataCell data={item.lcApplicant} />
-                      <TableDataCell data={item.lcAmount} />
+                      <TableDataCell data={item.exporterInfo.beneficiaryName} />
+                      <TableDataCell data={"BYCO"} />
+                      <TableDataCell data={item.amount} />
 
                       <TableCell className="px-1 py-1 max-w-[200px]">
                         <Button
                           variant="ghost"
                           className="bg-[#F0F0F0] hover:bg-[#e7e7e7] border border-borderCol rounded-md w-full p-2"
                         >
-                          {item.bids} Bid(s)
+                          {2} Bid(s)
                         </Button>
                       </TableCell>
                       <TableCell className="px-1 py-1 max-w-[200px]">
-                        <TableDialog />
+                        <TableDialog id={item._id}/>
                       </TableCell>
                     </TableRow>
                   ))}
